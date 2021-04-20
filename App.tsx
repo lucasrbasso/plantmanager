@@ -1,12 +1,30 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
-import Welcome from './src/pages/Welcome';
+import { SafeAreaView, StatusBar } from 'react-native';
+import AppLoading from 'expo-app-loading';
+import {
+    useFonts,
+    Jost_400Regular,
+    Jost_600SemiBold,
+} from '@expo-google-fonts/jost';
+
+import Routes from './src/routes';
 
 export default function App() {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" backgroundColor="#DAF2E4" />
-      <Welcome />
-    </>
-  )
+    const [fontsLoaded] = useFonts({
+        Jost_400Regular,
+        Jost_600SemiBold,
+    });
+
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    }
+
+    return (
+        <>
+            <StatusBar barStyle="dark-content" backgroundColor="#DAF2E4" />
+            <SafeAreaView style={{ flex: 1 }}>
+                <Routes />
+            </SafeAreaView>
+        </>
+    );
 }
