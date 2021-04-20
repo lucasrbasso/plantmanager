@@ -68,7 +68,11 @@ const UserIdentification: React.FC = () => {
                                 onChangeText={handleInputChange}
                             />
                             <Footer>
-                                <Button onPress={handleSubmit}>
+                                <Button
+                                    isDisabled={!isFilled}
+                                    enabled={!!isFilled}
+                                    onPress={handleSubmit}
+                                >
                                     Confirmar
                                 </Button>
                             </Footer>

@@ -1,9 +1,13 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
 
-export const Container = styled(RectButton)`
+interface ButtonInputProps {
+    isDisabled?: boolean;
+}
+
+export const Container = styled(RectButton)<ButtonInputProps>`
     background-color: ${colors.green};
     justify-content: center;
     align-items: center;
@@ -11,6 +15,12 @@ export const Container = styled(RectButton)`
     margin-bottom: 30px;
     height: 56px;
     padding: 0 15px;
+
+    ${props =>
+        props.isDisabled &&
+        css`
+            background-color: ${colors.green_light};
+        `}
 `;
 
 export const ButtonText = styled.Text`
