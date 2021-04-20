@@ -26,6 +26,7 @@
         "prettier"
     ],
     "rules": {
+        "camelcase":"off",
         "prettier/prettier": "error",
         "react-hooks/rules-of-hooks": "error",
 	    "react-hooks/exhaustive-deps": "warn",
@@ -46,6 +47,7 @@
             }
           ],
           "no-use-before-define": "off",
+          "react/jsx-props-no-spreading" : "off",
           "@typescript-eslint/no-use-before-define": [
             "error"
           ],
