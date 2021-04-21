@@ -1,9 +1,16 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import Button from '../../components/Button';
 
 import { Container, Content, Emoji, Title, SubTitle, Footer } from './styles';
 
 const Confirmation: React.FC = () => {
+    const { navigate } = useNavigation();
+
+    const handleNavigate = useCallback(() => {
+        navigate('PlantSelect');
+    }, [navigate]);
+
     return (
         <Container>
             <Content>
@@ -15,7 +22,7 @@ const Confirmation: React.FC = () => {
                 </SubTitle>
 
                 <Footer>
-                    <Button>Começar</Button>
+                    <Button onPress={handleNavigate}>Começar</Button>
                 </Footer>
             </Content>
         </Container>
