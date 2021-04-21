@@ -21,7 +21,11 @@ export default function App() {
 
     return (
         <>
-            <StatusBar barStyle="dark-content" backgroundColor="#DAF2E4" />
+            <StatusBar
+                barStyle="dark-content"
+                backgroundColor="#DAF2E4"
+                translucent
+            />
             <SafeAreaView style={{ flex: 1 }}>
                 <Routes />
             </SafeAreaView>
