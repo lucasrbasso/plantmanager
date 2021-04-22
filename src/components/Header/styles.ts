@@ -18,7 +18,7 @@ export const Content = styled.View``;
 
 export const HelloText = styled.Text`
     font-size: 36px;
-    font-family: ${fonts.text};
+    font-family: ${fonts.light};
     color: ${colors.heading};
 `;
 
