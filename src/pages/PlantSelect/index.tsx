@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, StyleSheet, FlatList } from 'react-native';
 import Header from '../../components/Header';
 
 import EnvironmentButton from '../../components/EnvironmentButton';
@@ -12,9 +12,7 @@ import {
     Title,
     SubTitle,
     EnvironmentContainer,
-    EnvironmentList,
     PlantContainer,
-    PlantList,
 } from './styles';
 
 import api from '../../services/api';
@@ -117,11 +115,12 @@ const PlantSelect: React.FC = () => {
             </HeaderContainer>
 
             <EnvironmentContainer>
-                <EnvironmentList
+                <FlatList
+                    contentContainerStyle={styles.environmentList}
                     data={environments}
                     showsHorizontalScrollIndicator={false}
                     horizontal
-                    keyExtractor={environment => environment.key}
+                    keyExtractor={environment => environment.title}
                     renderItem={({ item: environment }) => (
                         <EnvironmentButton
                             active={environmentSelected === environment.key}
@@ -133,9 +132,10 @@ const PlantSelect: React.FC = () => {
                 />
             </EnvironmentContainer>
             <PlantContainer>
-                <PlantList
+                <FlatList
+                    contentContainerStyle={styles.plantList}
                     data={filteredPlants}
-                    keyExtractor={plant => String(plant.id)}
+                    keyExtractor={plant => String(plant.name)}
                     showsVerticalScrollIndicator={false}
                     numColumns={2}
                     onEndReachedThreshold={0.1}
@@ -159,3 +159,18 @@ const PlantSelect: React.FC = () => {
 };
 
 export default PlantSelect;
+
+const styles = StyleSheet.create({
+    plantList: {
+        paddingBottom: 32,
+        paddingHorizontal: 16,
+    },
+    environmentList: {
+        height: 40,
+        justifyContent: 'center',
+        paddingBottom: 5,
+        marginVertical: 32,
+        marginLeft: 32,
+        paddingRight: 64,
+    },
+});
