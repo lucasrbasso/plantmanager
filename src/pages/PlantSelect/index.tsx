@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, StyleSheet, FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Header from '../../components/Header';
 
 import EnvironmentButton from '../../components/EnvironmentButton';
@@ -17,26 +18,15 @@ import {
 
 import api from '../../services/api';
 import colors from '../../styles/colors';
+import { PlantProps as Plant } from '../../libs/storage';
 
-export interface Environment {
+interface Environment {
     key: string;
     title: string;
 }
 
-export interface Plant {
-    id: number;
-    name: string;
-    about: string;
-    water_types: string;
-    photo: string;
-    environments: [string];
-    frequency: {
-        number: number;
-        repeat_every: string;
-    };
-}
-
 const PlantSelect: React.FC = () => {
+    const { navigate } = useNavigation();
     const [environments, setEnvironments] = useState<Environment[]>([]);
     const [plants, setPlants] = useState<Plant[]>([]);
     const [environmentSelected, setEnvironmentSelected] = useState('all');
@@ -44,7 +34,6 @@ const PlantSelect: React.FC = () => {
 
     const [page, setPage] = useState(1);
     const [loadingMore, setLoadingMore] = useState(false);
-    const [loadedAll, setLoadedAll] = useState(false);
 
     useEffect(() => {
         async function fetchEnvironments() {
@@ -66,7 +55,7 @@ const PlantSelect: React.FC = () => {
             `plants?_sort=name&_order=asc&_page=${page}&_limit=8`,
         ).then(response => {
             if (!response.data) {
-                setLoadedAll(true);
+                setLoading(false);
             }
 
             if (page > 1) {
@@ -79,6 +68,13 @@ const PlantSelect: React.FC = () => {
             setLoadingMore(false);
         });
     }, [page]);
+
+    const handlePlantSelect = useCallback(
+        (plant: Plant) => {
+            navigate('PlantSave', { plant });
+        },
+        [navigate],
+    );
 
     const handleEnvironment = useCallback((environment: string) => {
         setEnvironmentSelected(environment);
@@ -143,7 +139,10 @@ const PlantSelect: React.FC = () => {
                         handleFetchMore(distanceFromEnd)
                     }
                     renderItem={({ item: plant }) => (
-                        <PlantCardPrimary data={plant} />
+                        <PlantCardPrimary
+                            data={plant}
+                            onPress={() => handlePlantSelect(plant)}
+                        />
                     )}
                     ListFooterComponent={
                         loadingMore ? (

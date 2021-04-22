@@ -4,8 +4,11 @@ import {
     Keyboard,
     KeyboardAvoidingView,
     Platform,
+    Alert,
     TouchableWithoutFeedback,
 } from 'react-native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Button from '../../components/Button';
 import {
@@ -38,8 +41,26 @@ const UserIdentification: React.FC = () => {
     }, []);
 
     const handleSubmit = useCallback(() => {
-        navigate('Confirmation');
-    }, []);
+        if (!name) {
+            Alert.alert('Me diz como chamar você 😪');
+            return;
+        }
+
+        try {
+            AsyncStorage.setItem('@PlantManager:user', name).then(() =>
+                navigate('Confirmation', {
+                    title: `Prontinho, ${name}`,
+                    subtitle:
+                        'Agora vamos começar a cuidar das suas plantinhas com muito cuidado',
+                    buttonTitle: 'Começar',
+                    icon: 'smile',
+                    nextScreen: 'PlantSelect',
+                }),
+            );
+        } catch {
+            Alert.alert('Não foi possível cadastrar seu nome 😪');
+        }
+    }, [navigate, name]);
 
     return (
         <Container>
