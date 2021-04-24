@@ -1,14 +1,14 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import colors from '../styles/colors';
-import Welcome from '../pages/Welcome';
-import UserIdentification from '../pages/UserIdentification';
-import Confirmation from '../pages/Confirmation';
+import colorTheme from '../styles/colors';
 import PlantSave from '../pages/PlantSave';
-import AuthRoutes from './tab.routes';
+import TabRoutes from './tab.routes';
+import Confirmation from '../pages/Confirmation';
 
 const Stack = createStackNavigator();
+
+const { colors } = colorTheme();
 
 const AppRoutes: React.FC = () => (
     <Stack.Navigator
@@ -17,15 +17,10 @@ const AppRoutes: React.FC = () => (
             cardStyle: { backgroundColor: colors.white },
         }}
     >
-        <Stack.Screen name="Welcome" component={Welcome} />
-        <Stack.Screen
-            name="UserIdentification"
-            component={UserIdentification}
-        />
-        <Stack.Screen name="Confirmation" component={Confirmation} />
-        <Stack.Screen name="PlantSelect" component={AuthRoutes} />
+        <Stack.Screen name="PlantSelect" component={TabRoutes} />
         <Stack.Screen name="PlantSave" component={PlantSave} />
-        <Stack.Screen name="MyPlants" component={AuthRoutes} />
+        <Stack.Screen name="Added" component={Confirmation} />
+        <Stack.Screen name="MyPlants" component={TabRoutes} />
     </Stack.Navigator>
 );
 
