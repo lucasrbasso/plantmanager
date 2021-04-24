@@ -14,7 +14,7 @@ const AppRoutes: React.FC = () => (
     <Stack.Navigator
         screenOptions={{
             headerShown: false,
-            cardStyle: { backgroundColor: colors.white },
+            cardStyle: { backgroundColor: colors.background },
         }}
     >
         <Stack.Screen name="PlantSelect" component={TabRoutes} />
