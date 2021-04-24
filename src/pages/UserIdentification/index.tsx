@@ -7,8 +7,7 @@ import {
     Alert,
     TouchableWithoutFeedback,
 } from 'react-native';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import colorTheme from '../../styles/colors';
 
 import Button from '../../components/Button';
 import {
@@ -22,6 +21,7 @@ import {
 } from './styles';
 
 const UserIdentification: React.FC = () => {
+    const { colors } = colorTheme();
     const { navigate } = useNavigation();
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(false);
@@ -40,23 +40,21 @@ const UserIdentification: React.FC = () => {
         setName(value);
     }, []);
 
-    const handleSubmit = useCallback(() => {
-        if (!name) {
-            Alert.alert('Me diz como chamar você 😪');
-            return;
-        }
-
+    const handleSubmit = useCallback(async () => {
         try {
-            AsyncStorage.setItem('@PlantManager:user', name).then(() =>
-                navigate('Confirmation', {
-                    title: `Prontinho, ${name}`,
-                    subtitle:
-                        'Agora vamos começar a cuidar das suas plantinhas com muito cuidado',
-                    buttonTitle: 'Começar',
-                    icon: 'smile',
-                    nextScreen: 'PlantSelect',
-                }),
-            );
+            const user = {
+                username: name,
+            };
+
+            navigate('Confirmation', {
+                title: `Prontinho, ${name}!`,
+                subtitle:
+                    'Agora vamos começar a cuidar das suas plantinhas com muito cuidado',
+                buttonTitle: 'Começar',
+                icon: 'smile',
+                nextScreen: 'PlantSelect',
+                user,
+            });
         } catch {
             Alert.alert('Não foi possível cadastrar seu nome 😪');
         }
@@ -83,7 +81,8 @@ const UserIdentification: React.FC = () => {
                             <TextInput
                                 isFilled={isFilled}
                                 isFocused={isFocused}
-                                placeholder="Digite um nome"
+                                placeholder="Digite seu usuário do GitHub"
+                                placeholderTextColor={colors.body_light}
                                 onBlur={handleInputBlur}
                                 onFocus={handleInputFocus}
                                 onChangeText={handleInputChange}
