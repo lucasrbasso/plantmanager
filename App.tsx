@@ -12,6 +12,9 @@ import {
 import AppProvider from './src/hooks';
 
 import Routes from './src/routes';
+import colorTheme from './src/styles/colors';
+
+const { colors } = colorTheme();
 
 const colorScheme = Appearance.getColorScheme();
 
@@ -39,7 +42,9 @@ export default function App() {
             />
             <AppearanceProvider>
                 <AppProvider>
-                    <SafeAreaView style={{ flex: 1 }}>
+                    <SafeAreaView
+                        style={{ flex: 1, backgroundColor: colors.background }}
+                    >
                         <Routes />
                     </SafeAreaView>
                 </AppProvider>
