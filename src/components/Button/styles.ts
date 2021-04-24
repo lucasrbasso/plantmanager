@@ -1,7 +1,10 @@
 import styled, { css } from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
-import colors from '../../styles/colors';
+
+import colorTheme from '../../styles/colors';
 import fonts from '../../styles/fonts';
+
+const { colors } = colorTheme();
 
 interface ButtonInputProps {
     isDisabled?: boolean;
@@ -19,7 +22,7 @@ export const Container = styled(RectButton)<ButtonInputProps>`
     ${props =>
         props.isDisabled &&
         css`
-            background-color: ${colors.green_light};
+            background-color: #296b45;
         `}
 `;
 

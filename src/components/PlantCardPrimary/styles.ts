@@ -1,8 +1,10 @@
 import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
 
-import colors from '../../styles/colors';
+import colorTheme from '../../styles/colors';
 import fonts from '../../styles/fonts';
+
+const { colors } = colorTheme();
 
 export const Container = styled(RectButton)`
     flex: 1;
@@ -15,7 +17,7 @@ export const Container = styled(RectButton)`
 `;
 
 export const ButtonText = styled.Text`
-    color: ${colors.green_dark};
+    color: ${colors.heading};
     font-family: ${fonts.heading};
     margin: 16px 0;
     font-size: 13px;

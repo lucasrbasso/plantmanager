@@ -1,8 +1,9 @@
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import styled from 'styled-components/native';
-import colors from '../../styles/colors';
-
+import colorTheme from '../../styles/colors';
 import fonts from '../../styles/fonts';
+
+const { colors } = colorTheme();
 
 export const Container = styled.View`
     flex: 1;
@@ -68,7 +69,7 @@ export const ChooseTimerText = styled.Text`
     text-align: center;
     font-family: ${fonts.complement};
     color: ${colors.heading};
-    font-size: 12px;
+    font-size: 15px;
     margin-bottom: 5px;
 `;
 

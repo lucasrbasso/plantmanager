@@ -1,6 +1,8 @@
 import styled from 'styled-components/native';
-import colors from '../../styles/colors';
+import colorTheme from '../../styles/colors';
 import fonts from '../../styles/fonts';
+
+const { colors } = colorTheme();
 
 export const Container = styled.View`
     flex: 1;

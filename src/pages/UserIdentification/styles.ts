@@ -1,6 +1,8 @@
 import styled, { css } from 'styled-components/native';
-import colors from '../../styles/colors';
+import colorTheme from '../../styles/colors';
 import fonts from '../../styles/fonts';
+
+const { colors } = colorTheme();
 
 interface TextInputProps {
     isFocused: boolean;
@@ -12,6 +14,7 @@ export const Container = styled.View`
     width: 100%;
     align-items: center;
     justify-content: space-around;
+    background-color: ${colors.background};
 `;
 
 export const Content = styled.View`
@@ -36,7 +39,7 @@ export const Form = styled.View`
 `;
 
 export const FormText = styled.Text`
-    font-size: 44px;
+    font-size: 50px;
 `;
 
 export const TextInput = styled.TextInput<TextInputProps>`

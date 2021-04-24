@@ -1,8 +1,10 @@
 import styled, { css } from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
 
-import colors from '../../styles/colors';
+import colorTheme from '../../styles/colors';
 import fonts from '../../styles/fonts';
+
+const { colors } = colorTheme();
 
 interface ButtonProps {
     isActive: boolean;

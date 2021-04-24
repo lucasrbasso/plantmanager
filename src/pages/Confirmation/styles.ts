@@ -1,11 +1,14 @@
 import styled from 'styled-components/native';
-import colors from '../../styles/colors';
+import colorTheme from '../../styles/colors';
 import fonts from '../../styles/fonts';
+
+const { colors } = colorTheme();
 
 export const Container = styled.View`
     flex: 1;
     align-items: center;
     justify-content: space-around;
+    background-color: ${colors.background};
 `;
 
 export const Content = styled.View`
