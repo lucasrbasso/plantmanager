@@ -1,6 +1,7 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import Button from '../../components/Button';
+import { useAuth } from '../../hooks/Auth';
 
 import { Container, Content, Emoji, Title, SubTitle, Footer } from './styles';
 
@@ -10,6 +11,9 @@ interface Params {
     buttonTitle: string;
     icon: 'smile' | 'hug';
     nextScreen: string;
+    user?: {
+        username: string;
+    };
 }
 
 const emojis = {
@@ -19,6 +23,7 @@ const emojis = {
 
 const Confirmation: React.FC = () => {
     const { navigate } = useNavigation();
+    const { signIn } = useAuth();
     const routes = useRoute();
     const {
         title,
@@ -26,11 +31,17 @@ const Confirmation: React.FC = () => {
         buttonTitle,
         icon,
         nextScreen,
+        user,
     } = routes.params as Params;
 
-    const handleNavigate = useCallback(() => {
+    const handleSubmit = useCallback(async () => {
+        if (nextScreen === 'PlantSelect' && user) {
+            await signIn(user);
+            return;
+        }
+
         navigate(nextScreen);
-    }, [navigate, nextScreen]);
+    }, [nextScreen, signIn, user, navigate]);
 
     return (
         <Container>
@@ -40,7 +51,7 @@ const Confirmation: React.FC = () => {
                 <SubTitle>{subtitle}</SubTitle>
 
                 <Footer>
-                    <Button onPress={handleNavigate}>{buttonTitle}</Button>
+                    <Button onPress={handleSubmit}>{buttonTitle}</Button>
                 </Footer>
             </Content>
         </Container>

@@ -1,5 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
+import { Feather } from '@expo/vector-icons';
+import React from 'react';
+import { TouchableOpacity } from 'react-native';
+import { useAuth } from '../../hooks/Auth';
+import colorTheme from '../../styles/colors';
 
 import {
     Container,
@@ -9,28 +12,21 @@ import {
     ProfileImage,
 } from './styles';
 
+const { colors } = colorTheme();
+
 const Header: React.FC = ({ ...rest }) => {
-    const [userName, setUserName] = useState('');
-
-    useEffect(() => {
-        async function loadStorageUserName() {
-            const user = await AsyncStorage.getItem('@PlantManager:user');
-            setUserName(user || '');
-        }
-
-        loadStorageUserName();
-    });
+    const { user } = useAuth();
 
     return (
         <Container {...rest}>
             <Content>
                 <HelloText>Olá,</HelloText>
-                <UserText>{userName}</UserText>
+                <UserText>{user.username} ;)</UserText>
             </Content>
 
             <ProfileImage
                 source={{
-                    uri: 'https://avatars.githubusercontent.com/u/55299115?v=4',
+                    uri: `https://github.com/${user.username}.png`,
                 }}
             />
         </Container>

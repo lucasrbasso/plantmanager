@@ -1,15 +1,13 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useCallback, useState } from 'react';
 
-import { FlatList } from 'react-native';
-import { formatDistance } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { FlatList, Alert } from 'react-native';
+import { differenceInHours, differenceInMinutes } from 'date-fns';
 
 import PlantCardSecondary from '../../components/PlantCardSecondary';
 import Header from '../../components/Header';
 
 import WaterDrop from '../../assets/waterdrop.png';
-import { loadPlants, PlantProps } from '../../libs/storage';
+import { loadPlants, PlantProps, removePlant } from '../../libs/storage';
 
 import {
     Container,
@@ -19,9 +17,9 @@ import {
     Plants,
     PlantsText,
 } from './styles';
+import Load from '../../components/Load';
 
 const MyPlants: React.FC = () => {
-    const { navigate } = useNavigation();
     const [plants, setPlants] = useState<PlantProps[]>([]);
     const [loading, setLoading] = useState(true);
     const [nextWatered, setNextWatered] = useState('');
@@ -30,15 +28,19 @@ const MyPlants: React.FC = () => {
         async function loadStorageData() {
             const plantsStoraged = await loadPlants();
 
-            const nextTime = formatDistance(
-                new Date(plantsStoraged[0].dateTimeNotification).getTime(),
-                new Date().getTime(),
-                { locale: ptBR },
-            );
+            if (plantsStoraged.length > 0) {
+                const time = 'hora(s)';
+                const nextTime = differenceInHours(
+                    new Date(plantsStoraged[0].dateTimeNotification),
+                    new Date(),
+                );
 
-            setNextWatered(
-                `Não esquece de regar a ${plantsStoraged[0].name} à ${nextTime}.`,
-            );
+                setNextWatered(
+                    `Não esquece de regar a ${plantsStoraged[0].name} em ${nextTime} ${time}.`,
+                );
+            } else {
+                setNextWatered(`Você ainda não tem nenhuma planta!`);
+            }
 
             setPlants(plantsStoraged);
             setLoading(false);
@@ -47,9 +49,31 @@ const MyPlants: React.FC = () => {
         loadStorageData();
     }, []);
 
-    const handleNavigate = useCallback(() => {
-        navigate('PlantSelect');
-    }, [navigate]);
+    const handleRemove = useCallback((plant: PlantProps) => {
+        Alert.alert('Remover', `Deseja remover a ${plant.name}?`, [
+            {
+                text: 'Não',
+                style: 'cancel',
+            },
+            {
+                text: 'Sim',
+                onPress: async () => {
+                    try {
+                        await removePlant(String(plant.id));
+                        setPlants(oldData =>
+                            oldData.filter(p => p.id !== plant.id),
+                        );
+                    } catch (error) {
+                        Alert.alert('Não foi possível remover!');
+                    }
+                },
+            },
+        ]);
+    }, []);
+
+    if (loading) {
+        return <Load />;
+    }
 
     return (
         <Container>
@@ -67,7 +91,10 @@ const MyPlants: React.FC = () => {
                     data={plants}
                     keyExtractor={plant => String(plant.id)}
                     renderItem={({ item: plant }) => (
-                        <PlantCardSecondary data={plant} />
+                        <PlantCardSecondary
+                            handleRemove={() => handleRemove(plant)}
+                            data={plant}
+                        />
                     )}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: 32 }}

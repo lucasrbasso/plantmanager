@@ -5,7 +5,7 @@ import { isBefore } from 'date-fns';
 import React, { useCallback, useState } from 'react';
 import { SvgFromUri } from 'react-native-svg';
 
-import { Alert, Platform } from 'react-native';
+import { Alert, Platform, ScrollView } from 'react-native';
 import { format } from 'date-fns/esm';
 import { PlantProps, savePlant } from '../../libs/storage';
 import {
@@ -44,11 +44,11 @@ const PlantSave: React.FC = () => {
             }
 
             if (dateTime && isBefore(dateTime, new Date())) {
-                setSelectedDateTime(new Date());
-                Alert.alert('Escolha uma hora no futuro! ⌛');
-            }
+                const lateDate = new Date(dateTime);
+                lateDate.setHours(lateDate.getHours() + 24);
 
-            if (dateTime) {
+                setSelectedDateTime(lateDate);
+            } else if (dateTime) {
                 setSelectedDateTime(dateTime);
             }
         },
@@ -67,7 +67,7 @@ const PlantSave: React.FC = () => {
                     dateTimeNotification: selectedDateTime,
                 });
 
-                navigate('Confirmation', {
+                navigate('Added', {
                     title: `Tudo certo`,
                     subtitle:
                         'Fique tranquilo que sempre vamos lembrar você de cuidar da sua plantinha com bastante amor.',
@@ -84,42 +84,49 @@ const PlantSave: React.FC = () => {
     }, [plant, selectedDateTime, navigate]);
 
     return (
-        <Container>
-            <PlantInfo>
-                <SvgFromUri uri={plant.photo} width={200} height={200} />
-                <PlantName>{plant.name}</PlantName>
-                <AboutPlantText>{plant.about}</AboutPlantText>
-            </PlantInfo>
-            <Controller>
-                <TipContainer>
-                    <WaterImage source={WaterDrop} />
-                    <TipText>{plant.water_tips}</TipText>
-                </TipContainer>
+        <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ flex: 1 }}
+        >
+            <Container>
+                <PlantInfo>
+                    <SvgFromUri uri={plant.photo} width={200} height={200} />
+                    <PlantName>{plant.name}</PlantName>
+                    <AboutPlantText>{plant.about}</AboutPlantText>
+                </PlantInfo>
+                <Controller>
+                    <TipContainer>
+                        <WaterImage source={WaterDrop} />
+                        <TipText>{plant.water_tips}</TipText>
+                    </TipContainer>
 
-                <ChooseTimerText>
-                    Escolha o melhor horário para ser lembrado:
-                </ChooseTimerText>
+                    <ChooseTimerText>
+                        Escolha o melhor horário para ser lembrado:
+                    </ChooseTimerText>
 
-                {showDatePicker && (
-                    <DateTimePicker
-                        value={selectedDateTime}
-                        mode="time"
-                        display="spinner"
-                        onChange={handleChangeTime}
-                    />
-                )}
+                    {showDatePicker && (
+                        <DateTimePicker
+                            value={selectedDateTime}
+                            mode="time"
+                            display="spinner"
+                            onChange={handleChangeTime}
+                        />
+                    )}
 
-                {Platform.OS === 'android' && (
-                    <ChangeTimeButton onPress={handleOpenDatePickerForAndroid}>
-                        <ChangeTimeButtonText>
-                            {`⏰ ${format(selectedDateTime, 'HH:mm')}`}
-                        </ChangeTimeButtonText>
-                    </ChangeTimeButton>
-                )}
+                    {Platform.OS === 'android' && (
+                        <ChangeTimeButton
+                            onPress={handleOpenDatePickerForAndroid}
+                        >
+                            <ChangeTimeButtonText>
+                                {`⏰ ${format(selectedDateTime, 'HH:mm')}`}
+                            </ChangeTimeButtonText>
+                        </ChangeTimeButton>
+                    )}
 
-                <Button onPress={handleSave}>Cadastrar planta</Button>
-            </Controller>
-        </Container>
+                    <Button onPress={handleSave}>Cadastrar planta</Button>
+                </Controller>
+            </Container>
+        </ScrollView>
     );
 };
 
