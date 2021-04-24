@@ -30,10 +30,14 @@ const MyPlants: React.FC = () => {
 
             if (plantsStoraged.length > 0) {
                 const time = 'hora(s)';
-                const nextTime = differenceInHours(
-                    new Date(plantsStoraged[0].dateTimeNotification),
-                    new Date(),
-                );
+                let nextTime =
+                    new Date(
+                        plantsStoraged[0].dateTimeNotification,
+                    ).getHours() - new Date().getHours();
+
+                if (nextTime < 0) {
+                    nextTime += 24;
+                }
 
                 setNextWatered(
                     `Não esquece de regar a ${plantsStoraged[0].name} em ${nextTime} ${time}.`,
