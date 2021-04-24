@@ -1,6 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, StyleSheet, FlatList } from 'react-native';
+import {
+    ActivityIndicator,
+    StyleSheet,
+    FlatList,
+    TouchableOpacity,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Feather } from '@expo/vector-icons';
 import Header from '../../components/Header';
 
 import EnvironmentButton from '../../components/EnvironmentButton';
@@ -10,6 +16,8 @@ import Load from '../../components/Load';
 import {
     Container,
     HeaderContainer,
+    HeaderContent,
+    HeaderContentTitle,
     Title,
     SubTitle,
     EnvironmentContainer,
@@ -17,8 +25,11 @@ import {
 } from './styles';
 
 import api from '../../services/api';
-import colors from '../../styles/colors';
+import colorTheme from '../../styles/colors';
 import { PlantProps as Plant } from '../../libs/storage';
+import { useAuth } from '../../hooks/Auth';
+
+const { colors } = colorTheme();
 
 interface Environment {
     key: string;
@@ -31,6 +42,7 @@ const PlantSelect: React.FC = () => {
     const [plants, setPlants] = useState<Plant[]>([]);
     const [environmentSelected, setEnvironmentSelected] = useState('all');
     const [loading, setLoading] = useState(true);
+    const { signOut } = useAuth();
 
     const [page, setPage] = useState(1);
     const [loadingMore, setLoadingMore] = useState(false);
@@ -106,8 +118,19 @@ const PlantSelect: React.FC = () => {
         <Container>
             <HeaderContainer>
                 <Header />
-                <Title>Em qual ambiente </Title>
-                <SubTitle>você quer colocar sua planta?</SubTitle>
+                <HeaderContent>
+                    <HeaderContentTitle>
+                        <Title>Em qual ambiente </Title>
+                        <SubTitle>você quer colocar sua planta?</SubTitle>
+                    </HeaderContentTitle>
+                    <TouchableOpacity onPress={signOut}>
+                        <Feather
+                            name="power"
+                            size={20}
+                            color={colors.heading}
+                        />
+                    </TouchableOpacity>
+                </HeaderContent>
             </HeaderContainer>
 
             <EnvironmentContainer>

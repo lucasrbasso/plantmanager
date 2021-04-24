@@ -23,7 +23,7 @@ const Welcome: React.FC = () => {
             <Title>
                 Gerencie
                 {'\n'}
-                nossas plantas de
+                suas plantas de
                 {'\n'}
                 forma fácil
             </Title>
