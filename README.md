@@ -67,7 +67,7 @@ $ yarn start
 Em outro terminal execute o JSON server:
 
 ```bash
-$ json-server ./src/services/server.json --host 192.168.100.4 --port 3333
+$ json-server ./src/services/server.json --host {SEU IP} --port 3333
 ```
 
 ## 📝 License
