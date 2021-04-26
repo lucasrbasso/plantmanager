@@ -56,13 +56,13 @@ $ git clone https://github.com/lucasrbasso/plantmanager.git && cd plantmanager
 **Siga os passos abaixo**
 
 ```bash
-# Instale as dependência
+# Instale as dependências
 $ yarn
 
 # Inicie o servidor Expo
 $ yarn start
 
-# Você pode agora abrir a aplicação no seu celular ou emulador android/ios conforme a preferência.
+# Você pode abrir a aplicação no seu celular ou emulador android/ios conforme a preferência.
 ```
 Em outro terminal execute o JSON server:
 
