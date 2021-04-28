@@ -11,6 +11,12 @@ export const Container = styled.View`
     background-color: ${colors.shape};
 `;
 
+export const BackButton = styled.TouchableOpacity`
+    position: relative;
+    margin-top: 60px;
+    margin-left: 30px;
+`;
+
 export const PlantInfo = styled.View`
     flex: 1;
     padding: 50px 30px;

@@ -4,12 +4,14 @@ import { isBefore } from 'date-fns';
 
 import React, { useCallback, useState } from 'react';
 import { SvgFromUri } from 'react-native-svg';
+import { Feather } from '@expo/vector-icons';
 
 import { Alert, Platform, ScrollView } from 'react-native';
 import { format } from 'date-fns/esm';
 import { PlantProps, savePlant } from '../../libs/storage';
 import {
     Container,
+    BackButton,
     PlantInfo,
     PlantName,
     AboutPlantText,
@@ -22,8 +24,12 @@ import {
     ChangeTimeButtonText,
 } from './styles';
 
+import colorTheme from '../../styles/colors';
+
 import WaterDrop from '../../assets/waterdrop.png';
 import Button from '../../components/Button';
+
+const { colors } = colorTheme();
 
 interface PlantParams {
     plant: PlantProps;
@@ -32,7 +38,7 @@ interface PlantParams {
 const PlantSave: React.FC = () => {
     const [selectedDateTime, setSelectedDateTime] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(Platform.OS === 'ios');
-    const { navigate } = useNavigation();
+    const { navigate, goBack } = useNavigation();
 
     const route = useRoute();
     const { plant } = route.params as PlantParams;
@@ -58,6 +64,10 @@ const PlantSave: React.FC = () => {
     const handleOpenDatePickerForAndroid = useCallback(() => {
         setShowDatePicker(oldState => !oldState);
     }, []);
+
+    const handleGoBack = useCallback(() => {
+        goBack();
+    }, [goBack]);
 
     const handleSave = useCallback(() => {
         const save = async () => {
@@ -89,6 +99,13 @@ const PlantSave: React.FC = () => {
             contentContainerStyle={{ flex: 1 }}
         >
             <Container>
+                <BackButton onPress={handleGoBack}>
+                    <Feather
+                        name="chevron-left"
+                        size={24}
+                        color={colors.heading}
+                    />
+                </BackButton>
                 <PlantInfo>
                     <SvgFromUri uri={plant.photo} width={200} height={200} />
                     <PlantName>{plant.name}</PlantName>
